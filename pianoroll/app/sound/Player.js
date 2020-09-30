@@ -26,7 +26,8 @@ function (Piano, Sampler, Synth) {
 
 		this._sampler = new Sampler();
 
-		this._currentInstrument = this._synth;
+		this._piano.load();
+		this._currentInstrument = this._piano;
 	};
 
 	Player.prototype.setInstrument = function(inst, buffer){

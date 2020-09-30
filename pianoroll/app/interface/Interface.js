@@ -23,15 +23,15 @@ function (interfaceStyle, SoundSelection, PlayButton, Microphone) {
 		this._interface.id = "SongControls";
 		container.appendChild(this._interface);
 
-		this._soundButtons = new SoundSelection(this._interface);
+		// this._soundButtons = new SoundSelection(this._interface);
 
 		this._playButton = new PlayButton(this._interface);
 
-		this._microphone = new Microphone(this._interface, this._soundButtons.microphone);
+		// this._microphone = new Microphone(this._interface, this._soundButtons.microphone);
 
-		this._microphone.onstart = this._startRec.bind(this);
-		this._microphone.onstop = this._stopRec.bind(this);
-		this._microphone.oncancel = this._recCanceled.bind(this);
+		// this._microphone.onstart = this._startRec.bind(this);
+		// this._microphone.onstop = this._stopRec.bind(this);
+		// this._microphone.oncancel = this._recCanceled.bind(this);
 
 		this._onRec = function(){};
 	};
@@ -41,7 +41,7 @@ function (interfaceStyle, SoundSelection, PlayButton, Microphone) {
 	};
 
 	Interface.prototype.onInstrument = function(cb){
-		this._soundButtons.onSelect = cb;
+		// this._soundButtons.onSelect = cb;
 	};
 
 	Interface.prototype.onScore = function(cb){
@@ -53,7 +53,7 @@ function (interfaceStyle, SoundSelection, PlayButton, Microphone) {
 	};
 
 	Interface.prototype.onBuffer = function(cb){
-		this._microphone.onbuffer = cb;
+		// this._microphone.onbuffer = cb;
 	};
 
 	Interface.prototype._startRec = function(){

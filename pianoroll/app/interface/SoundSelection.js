@@ -18,7 +18,7 @@ define(["style/interface.scss"], function (interfaceStyle) {
 
 	var SoundSelection = function(container){
 
-		this._buttons = document.createElement("DIV");
+		/* this._buttons = document.createElement("DIV");
 		this._buttons.id = "SynthControls";
 		container.appendChild(this._buttons);
 
@@ -41,10 +41,10 @@ define(["style/interface.scss"], function (interfaceStyle) {
 		this.microphone.classList.add("Button");
 		this.microphone.classList.add("icon-svg_record");
 		this.microphone.addEventListener("click", this._clicked.bind(this, "sampler"));
-		this._buttons.appendChild(this.microphone);
+		this._buttons.appendChild(this.microphone);*/
 
 		//the currently active element
-		this._currentInstrument = "synth";
+		this._currentInstrument = "piano";
 		this.setInstrument(this._currentInstrument);
 
 		this._lastInstrument = null;
@@ -76,7 +76,7 @@ define(["style/interface.scss"], function (interfaceStyle) {
 		this._lastInstrument = this._currentInstrument;
 		this._currentInstrument = inst;
 		//remove the currently active element
-		var activeEl = this._buttons.querySelector(".Active");
+		/* var activeEl = this._buttons.querySelector(".Active");
 		if (activeEl){
 			activeEl.classList.remove("Active");
 		}
@@ -90,7 +90,7 @@ define(["style/interface.scss"], function (interfaceStyle) {
 			case "sampler" :
 				this.microphone.classList.add("Active");
 				break;
-		}
+		}*/
 	};
 
 	return SoundSelection;

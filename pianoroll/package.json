@@ -13,11 +13,12 @@
     "file-loader": "^0.8.4",
     "json-loader": "^0.5.2",
     "node-libs-browser": "^0.5.2",
-    "node-sass": "^3.2.0",
+    "node-sass": "^4.14.1",
     "sass-loader": "^1.0.2",
     "style-loader": "^0.12.3",
     "url-loader": "^0.5.6",
-    "webpack": "^1.9.11"
+    "webpack": "^1.15.0",
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "binary-search-bounds": "^2.0.3",
@@ -27,7 +28,6 @@
     "jquery": "^2.2.1",
     "jquery-mousewheel": "^3.1.13",
     "midiconvert": "^0.4.2",
-    "node-sass": "^3.4.2",
     "process": "^0.11.1",
     "startaudiocontext": "^1.1.0",
     "teoria": "^1.11.0",

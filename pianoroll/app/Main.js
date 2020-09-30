@@ -31,75 +31,90 @@ require(["domready", "roll/Roll", "sound/Player", "interface/Interface", "Tone/c
             var overlay = new Overlay(document.body, roll, interface);
 
             //set the first score
-            roll.setScore(preludeInC);
 
-            /**
-             * EVENTS
-             */
-            interface.onInstrument(function (inst) {
-                player.setInstrument(inst);
-            });
-            interface.onPlay(function (playing) {
-                if (playing) {
-                    roll.start();
-                } else {
-                    roll.stop();
-                    player.releaseAll();
-                }
-            });
-            interface.onScore(function (json) {
-                roll.setScore(json);
-            });
-
-            var wasPlaying = false;
-            interface.onRecord(function (recording) {
-                if (recording) {
-                    wasPlaying = Transport.state === "started";
-                    roll.stop();
-                } else {
-                    if (wasPlaying) {
-                        wasPlaying = false;
-                        roll.start();
+            var name=window.location.hash.substr(1);
+            console.log(name);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "./midi/" + name + ".json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        roll.setScore(json);
+                    } else {
+                        console.log('Error: ' + xhr.status); // An error occurred during the request.
                     }
-                }
-            });
-            interface.onBuffer(function (buffer, duration, onset) {
-                player.setBuffer(buffer, duration, onset);
-            });
-
-
-            roll.onnote = function (note, duration, time, velocity) {
-                player.triggerAttackRelease(note, duration, time, velocity);
-            };
-            roll.onstop = function () {
-                player.releaseAll();
-            };
-
-            var orientation = new Orientation(function () {
-                //called when stopped
-                Transport.stop();
-                roll.stop();
-                interface.stop();
-            });
-
-            window.parent.postMessage("loaded", "*");
-
-            //send the ready message to the parent
-            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-            //full screen button on iOS
-            if (isIOS) {
-                //make a full screen element and put it in front
-                var iOSTapper = document.createElement("div");
-                iOSTapper.id = "iOSTap";
-                document.body.appendChild(iOSTapper);
-                new StartAudioContext(Tone.context, iOSTapper).then(function() {
-                    iOSTapper.remove();
-                    window.parent.postMessage('ready', '*');
+                /**
+                 * EVENTS
+                 */
+                interface.onInstrument(function (inst) {
+                    player.setInstrument(inst);
                 });
-            } else {
-                window.parent.postMessage("ready", "*");
-            }
+                interface.onPlay(function (playing) {
+                    if (playing) {
+                        roll.start();
+                    } else {
+                        roll.stop();
+                        player.releaseAll();
+                    }
+                });
+                interface.onScore(function (json) {
+                    roll.setScore(json);
+                });
 
+                var wasPlaying = false;
+                interface.onRecord(function (recording) {
+                    if (recording) {
+                        wasPlaying = Transport.state === "started";
+                        roll.stop();
+                    } else {
+                        if (wasPlaying) {
+                            wasPlaying = false;
+                            roll.start();
+                        }
+                    }
+                });
+                interface.onBuffer(function (buffer, duration, onset) {
+                    player.setBuffer(buffer, duration, onset);
+                });
+
+
+                roll.onnote = function (note, duration, time, velocity) {
+                    player.triggerAttackRelease(note, duration, time, velocity);
+                };
+                roll.onstop = function () {
+                    player.releaseAll();
+                };
+
+                var orientation = new Orientation(function () {
+                    //called when stopped
+                    Transport.stop();
+                    roll.stop();
+                    interface.stop();
+                });
+
+                window.parent.postMessage("loaded", "*");
+
+                //send the ready message to the parent
+                var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+                //full screen button on iOS
+                if (isIOS) {
+                    //make a full screen element and put it in front
+                    var iOSTapper = document.createElement("div");
+                    iOSTapper.id = "iOSTap";
+                    document.body.appendChild(iOSTapper);
+                    new StartAudioContext(Tone.context, iOSTapper).then(function() {
+                        iOSTapper.remove();
+                        window.parent.postMessage('ready', '*');
+                    });
+                } else {
+                    window.parent.postMessage("ready", "*");
+                }
+
+                }
+            }.bind(this);
+            xhr.send(null);
+            // roll.setScore(preludeInC);
         });
     });

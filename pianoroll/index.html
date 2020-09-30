@@ -1,11 +1,17 @@
 <html>
 <head>
-	<title>PianoRoll</title>
+	<title>PianoRoll2</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta name="description" content="PianoRoll">
 	<link href='https://fonts.googleapis.com/css?family=Roboto:300,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	<script type="text/javascript" src="./build/PianoRoll.js"></script>
+<embed type="text/html" src="player.html#satie" width="500" height="200">
+<embed type="text/html" src="player.html#preludeInC" width="500" height="200">
+	<frameset cols="25%,50%,25%">
+  <frame src="player.html#satie" />
+  <frame src="player.html#preludeInC" />
+  <frame src="player.html#satie" />
+</frameset>
 </body>
 </html>

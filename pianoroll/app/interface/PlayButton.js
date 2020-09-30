@@ -41,7 +41,7 @@ define(["style/interface.scss", "data/Scores", "Tone/core/Transport", "interface
         this._midiButton.addEventListener("click", this._clearMidiFile.bind(this));
 
 		//the prev button
-		this._prevButton = document.createElement("div");
+		/* this._prevButton = document.createElement("div");
 		this._prevButton.id = "Previous";
 		this._prevButton.classList.add("Button");
 		this._prevButton.classList.add("ScoreButton");
@@ -56,10 +56,10 @@ define(["style/interface.scss", "data/Scores", "Tone/core/Transport", "interface
 		this._nextButton.classList.add("ScoreButton");
 		this._nextButton.classList.add("icon-svg_right_arrow");
 		container.appendChild(this._nextButton);
-		this._nextButton.addEventListener("click", this._selectScore.bind(this, 1));
+		this._nextButton.addEventListener("click", this._selectScore.bind(this, 1));*/
 
 		this._scoreIndex = 0;
-		this._setScoreControls();
+		// this._setScoreControls();
 
 		//the callbacks
 		this.onPlay = function(){};
@@ -84,6 +84,7 @@ define(["style/interface.scss", "data/Scores", "Tone/core/Transport", "interface
 		this._setPlayIcon();
 		this._scoreIndex += move;
 		this._setScoreControls();
+
 		this._loadScore(Scores[this._scoreIndex]);
 	};
 
@@ -138,7 +139,7 @@ define(["style/interface.scss", "data/Scores", "Tone/core/Transport", "interface
 		xhr.send(null);
 	};
 
-	PlayButton.prototype._setScoreControls = function(){
+	/* PlayButton.prototype._setScoreControls = function(){
 		if (this._scoreIndex === 0){
 			this._prevButton.classList.add("Disabled");
 		} else {
@@ -150,7 +151,7 @@ define(["style/interface.scss", "data/Scores", "Tone/core/Transport", "interface
 		} else {
 			this._nextButton.classList.remove("Disabled");
 		}
-	};
+	};*/
 
 	return PlayButton;
 });
