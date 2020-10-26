@@ -1,10 +1,9 @@
 @font-face {
 	font-family: "icons";
-	src: url('https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.eot');
-	src: url('https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.eot?#iefix') format('eot'),
-		url('https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.woff') format('woff'),
-		url('https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.ttf') format('truetype'),
-		url('https://gweb-musiclab-site.appspot.com/static/fonts/icons/icons.svg#icons') format('svg');
+	src: url('../font/icons.eot');
+	src: url('../font/icons_iefix.eot') format('eot'),
+		url('../font/icons.woff') format('woff'),
+		url('../font/icons.ttf') format('truetype');
 }
 
 @mixin icon-styles {

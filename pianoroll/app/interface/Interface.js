@@ -40,6 +40,10 @@ function (interfaceStyle, SoundSelection, PlayButton, Microphone) {
 		this._playButton.onPlay = cb;
 	};
 
+	Interface.prototype.onJump = function(cb){
+		this._playButton.onJump = cb;
+	};
+
 	Interface.prototype.onInstrument = function(cb){
 		// this._soundButtons.onSelect = cb;
 	};

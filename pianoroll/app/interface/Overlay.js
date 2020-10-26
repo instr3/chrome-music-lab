@@ -15,10 +15,10 @@ define(["style/overlay.scss", "midiconvert/build/MidiConvert", "interface/Loader
             this._overlay.innerHTML = MIDI_UPLOAD_MSG;
             container.appendChild(this._overlay);
 
-            container.addEventListener('dragover', this._handleDragOver.bind(this));
-            container.addEventListener('dragenter', this._handleDragEnter.bind(this));
-            container.addEventListener('dragleave', this._handleDragLeave.bind(this));
-            container.addEventListener('drop', this._handleDrop.bind(this));
+            // container.addEventListener('dragover', this._handleDragOver.bind(this));
+            // container.addEventListener('dragenter', this._handleDragEnter.bind(this));
+            // container.addEventListener('dragleave', this._handleDragLeave.bind(this));
+            // container.addEventListener('drop', this._handleDrop.bind(this));
         };
 
         Overlay.prototype._handleDragOver = function(e) {
@@ -61,15 +61,21 @@ define(["style/overlay.scss", "midiconvert/build/MidiConvert", "interface/Loader
 
                     var reader = new FileReader();
                     reader.onload = function (e) {
+                        console.log(e.target.result);
                         var midi = MidiConvert.parse(e.target.result);
-                        const maxNotes = Math.max.apply(Math, midi.tracks.map(function (t) {
+                        /* const maxNotes = Math.max.apply(Math, midi.tracks.map(function (t) {
                             return t.notes.length;
                         }));
                         const longestTrack = midi.tracks.find(function (t) {
                             return t.notes.length === maxNotes;
-                        });
+                        }); */
 
-                        midi.notes = longestTrack.notes;
+                        for (var k = 0; k < midi.tracks.length; k++) {
+                            midi.tracks[k].notes = midi.tracks[k].notes.map(function(note) { note.track = k; return note;});
+                        }
+
+                        midi.notes = [].concat.apply([], midi.tracks.map(function(t){return t.notes;}));
+                        // console.log(midi.notes)
                         midi.header.tempo = midi.header.bpm;
 
                         for (var i = 0; i < midi.notes.length; i++) {

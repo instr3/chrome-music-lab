@@ -69,6 +69,9 @@ define(["jquery", "jquery-mousewheel"], function ($, mousewheel) {
 
 		this.element.addEventListener("touchstart", this.touchstart.bind(this));
 		this.element.addEventListener("touchend", this.touchend.bind(this));
+		this.element.addEventListener("mousedown", this.down.bind(this));
+		this.element.addEventListener("mousemove", this.move.bind(this));
+		this.element.addEventListener("mouseup", this.up.bind(this));
 
 		/**
 		 * a prebound version of the loop function
@@ -86,6 +89,8 @@ define(["jquery", "jquery-mousewheel"], function ($, mousewheel) {
 		 *  the callback function when touch override end
 		 */
 		this.scrubend = function(){};
+
+		this.dragStart = undefined;
 
 		//scroll back to the top if the page was reloaded
 		window.addEventListener("beforeunload", function() {
@@ -147,16 +152,32 @@ define(["jquery", "jquery-mousewheel"], function ($, mousewheel) {
 		this.touchdown = false;
 	};
 
+	Scroll.prototype.down = function(event){
+		this.touchdown = true;
+		if (!this.manualOverride){
+			this.manualOverride = true;
+			this.scrubstart();
+			this.dragStart=event.screenX;
+		}
+	};
+
+	Scroll.prototype.up = function(){
+		this.touchdown = false;
+		this.dragStart = undefined;
+	};
+
 	/**
 	 *  While the scrolling isn't paused,
 	 *  move forward normally
 	 */
-	Scroll.prototype.move = function(){
-		/*if (this.lastUpdate !== -1){
-			var delta = currentTime - this.lastUpdate;
-			this.currentScroll += (delta / 1000) * this.pixelsPerSecond;
-			this.element.scrollLeft(this.currentScroll);
-		}*/
+	Scroll.prototype.move = function(event){
+		if(this.dragStart !== undefined)
+		{
+			var delta = event.screenX - this.dragStart;
+			this.element.scrollLeft -= delta;
+			console.log(event);
+			this.dragStart = event.screenX;
+		}
 	};
 
 	/**

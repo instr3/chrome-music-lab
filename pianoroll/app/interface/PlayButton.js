@@ -40,14 +40,15 @@ define(["style/interface.scss", "data/Scores", "Tone/core/Transport", "interface
 		container.appendChild(this._midiButton);
         this._midiButton.addEventListener("click", this._clearMidiFile.bind(this));
 
-		//the prev button
-		/* this._prevButton = document.createElement("div");
+		this.onJump = function(){};
+		/*//the prev button
+		this._prevButton = document.createElement("div");
 		this._prevButton.id = "Previous";
 		this._prevButton.classList.add("Button");
 		this._prevButton.classList.add("ScoreButton");
 		this._prevButton.classList.add("icon-svg_left_arrow");
 		container.appendChild(this._prevButton);
-		this._prevButton.addEventListener("click", this._selectScore.bind(this, -1));
+		this._prevButton.addEventListener("click", this.onJump.bind(this, -1));
 
 		//the next button
 		this._nextButton = document.createElement("div");
@@ -56,7 +57,7 @@ define(["style/interface.scss", "data/Scores", "Tone/core/Transport", "interface
 		this._nextButton.classList.add("ScoreButton");
 		this._nextButton.classList.add("icon-svg_right_arrow");
 		container.appendChild(this._nextButton);
-		this._nextButton.addEventListener("click", this._selectScore.bind(this, 1));*/
+		this._nextButton.addEventListener("click", this.onJump.bind(this, 1));*/
 
 		this._scoreIndex = 0;
 		// this._setScoreControls();
@@ -86,6 +87,10 @@ define(["style/interface.scss", "data/Scores", "Tone/core/Transport", "interface
 		this._setScoreControls();
 
 		this._loadScore(Scores[this._scoreIndex]);
+	};
+
+	PlayButton.prototype._jump = function(direction){
+
 	};
 
 	PlayButton.prototype.stop = function(move){

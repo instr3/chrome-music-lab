@@ -15,9 +15,9 @@
  */
 
 require(["domready", "roll/Roll", "sound/Player", "interface/Interface", "Tone/core/Transport",
-        "midi/preludeInC.json", "StartAudioContext", "style/main.scss", "Tone/core/Tone", "interface/Orientation", "interface/Overlay"],
+        "midi/preludeInC.json", "StartAudioContext", "style/main.scss", "Tone/core/Tone", "interface/Orientation", "interface/Overlay", "midiconvert/build/MidiConvert"],
     function (domReady, Roll, Player, Interface, Transport, preludeInC,
-              StartAudioContext, mainStyle, Tone, Orientation, Overlay) {
+              StartAudioContext, mainStyle, Tone, Orientation, Overlay, MidiConvert) {
 
         domReady(function () {
 
@@ -35,12 +35,38 @@ require(["domready", "roll/Roll", "sound/Player", "interface/Interface", "Tone/c
             var name=window.location.hash.substr(1);
             console.log(name);
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "./midi/" + name + ".json");
+            xhr.open("GET", name);
+            xhr.responseType = "blob";
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        var json = JSON.parse(xhr.responseText);
-                        roll.setScore(json);
+                        var reader = new FileReader();
+                        reader.readAsBinaryString(xhr.response);
+                        reader.onloadend = function() {
+                            var midi = MidiConvert.parse(reader.result);
+
+                            for (var k = 0; k < midi.tracks.length; k++) {
+                                midi.tracks[k].notes = midi.tracks[k].notes.map(function(note) { note.track = k; return note;});
+                            }
+
+                            midi.notes = [].concat.apply([], midi.tracks.map(function(t){return t.notes;}));
+                            // console.log(midi.notes)
+                            midi.header.tempo = midi.header.bpm;
+                            var minTime = midi.notes[0].time;
+                            for (var i = 0; i < midi.notes.length; i++) {
+                                minTime = Math.min(minTime, midi.notes[i].time);
+                            }
+                            for (var i = 0; i < midi.notes.length; i++) {
+                                var t = midi.notes[i].time - minTime;
+                                var d = midi.notes[i].duration;
+                                midi.notes[i].time = Math.floor(t * 100) + 'i';
+                                midi.notes[i].duration = Math.floor(d * 100) + 'i';
+                                midi.notes[i].midiNote = midi.notes[i].midi;
+                                midi.notes[i].note = midi.notes[i].name;
+                            }
+                            // var json = JSON.parse(xhr.responseText);
+                            roll.setScore(midi);
+                        };
                     } else {
                         console.log('Error: ' + xhr.status); // An error occurred during the request.
                     }
@@ -60,6 +86,9 @@ require(["domready", "roll/Roll", "sound/Player", "interface/Interface", "Tone/c
                 });
                 interface.onScore(function (json) {
                     roll.setScore(json);
+                });
+                interface.onJump(function (direction){
+                    roll.jump(direction);
                 });
 
                 var wasPlaying = false;

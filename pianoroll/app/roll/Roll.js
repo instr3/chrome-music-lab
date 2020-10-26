@@ -127,8 +127,8 @@ function (Score, Transport, rollStyle, Scroll) {
 				if (this._currentNotes.indexOf(triggerLineNotes[i]) === -1){
 					var note = triggerLineNotes[i];
 					if (this._scrubbing){
-						this.onnote(note.note, 0.1, "+0.05", note.velocity * 0.3);
-						note.triggerAttackRelease(0.1, "+0.05", note.velocity);
+						// this.onnote(note.note, 0.1, "+0.05", note.velocity * 0.3);
+						// note.triggerAttackRelease(0.1, "+0.05", note.velocity);
 					} else {
 						var startTime = this._computedStartTime + note.noteOn + lookAhead;
 						this.onnote(note.note, note.duration, startTime, note.velocity);
@@ -184,6 +184,11 @@ function (Score, Transport, rollStyle, Scroll) {
 			this._currentNotes[i].triggerRelease();
 		}
 		this.onstop();
+	};
+
+	Roll.prototype.jump = function(direction){
+		console.log(direction);
+		this._scrollContainer.scrollLeft += direction * 100;
 	};
 
 	return Roll;

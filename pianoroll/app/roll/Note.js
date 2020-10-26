@@ -34,7 +34,9 @@ define(["Tone/core/Transport", "data/Colors"], function (Transport, Colors){
 		/**
 		 * The notes color
 		 */
-		this.color = Colors[noteName];
+		var track = noteDescription.track === undefined ? 0 : noteDescription.track;
+		console.log(noteDescription);
+		this.color = Colors[track%6];
 
 		/**
 		 *  the note name
